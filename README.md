@@ -106,5 +106,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 * **pandas**: For handling any data manipulation.
 * **python-docx**: For generating Word documents.
 * **Tkinter**: For creating the graphical user interface.
-
----
