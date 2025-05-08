@@ -30,8 +30,9 @@ pip install pandas python-docx
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/har-file-to-docx.git
-   cd har-file-to-docx
+   git clone https://github.com/Ahmedvini/LCP-.har-analyzer.git
+   cd LCP-.har-analyzer
+
    ```
 
 2. Install the required dependencies:
