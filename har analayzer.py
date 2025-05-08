@@ -11,16 +11,14 @@ def parse_har_file(har_file_path):
     entries = har_data['log']['entries']
     request_data = []
     for entry in entries:
-        # Extract request details including LCP
         response_time = entry['time']
         
-        # Evaluate LCP performance
         if response_time <= 2500:
-            performance = "Good"  # LCP is <= 2.5 seconds
+            performance = "Good"  
         elif 2500 < response_time <= 4000:
-            performance = "Needs Improvement"  # LCP is between 2.5 and 4 seconds
+            performance = "Needs Improvement"  
         else:
-            performance = "Poor"  # LCP is > 4 seconds
+            performance = "Poor" 
         
         request_info = {
             "url": entry['request']['url'],
@@ -39,21 +37,17 @@ def generate_document(request_data, output_doc_path):
     doc = Document()
     doc.add_heading('HAR File Analysis Report', 0)
     
-    # Add an overview section
     doc.add_heading('Overview:', level=1)
     doc.add_paragraph('This document contains a detailed analysis of the requests and responses from the provided HAR file.')
 
-    # Add a table for request data
     doc.add_heading('Request and Response Details:', level=1)
-    table = doc.add_table(rows=1, cols=6)  # One extra column for performance
+    table = doc.add_table(rows=1, cols=6)  
     table.style = 'Table Grid'
     
-    # Add table headers
     headers = ["URL", "Method", "Status", "Response Time (ms)", "Response Size (bytes)", "Performance"]
     for i, header in enumerate(headers):
         table.cell(0, i).text = header
     
-    # Add data to table
     for request in request_data:
         row = table.add_row().cells
         row[0].text = request['url']
@@ -61,9 +55,8 @@ def generate_document(request_data, output_doc_path):
         row[2].text = str(request['status'])
         row[3].text = str(request['response_time'])
         row[4].text = str(request['response_size'])
-        row[5].text = request['performance']  # Add performance status
+        row[5].text = request['performance']  
 
-    # Save the document
     doc.save(output_doc_path)
     return output_doc_path
 
@@ -89,38 +82,29 @@ def start_conversion():
         return
     
     try:
-        # Parse the .har file
         request_data = parse_har_file(har_file)
 
-        # Generate the document
         result = generate_document(request_data, output_file)
 
-        # Notify the user
         messagebox.showinfo("Success", f"Document successfully created at {result}")
     except Exception as e:
         messagebox.showerror("Error", f"An error occurred: {str(e)}")
 
-# GUI Setup
 root = tk.Tk()
 root.title("HAR File to Document Converter")
 root.geometry("400x300")
 
-# Variables
 har_file_path = tk.StringVar()
 output_doc_path = tk.StringVar()
 
-# HAR file selection
 tk.Label(root, text="Select HAR File:").pack(pady=10)
 tk.Entry(root, textvariable=har_file_path, width=40).pack(pady=5)
 tk.Button(root, text="Browse", command=select_har_file).pack(pady=5)
 
-# Output file selection
 tk.Label(root, text="Select Output Document Location:").pack(pady=10)
 tk.Entry(root, textvariable=output_doc_path, width=40).pack(pady=5)
 tk.Button(root, text="Browse", command=select_output_location).pack(pady=5)
 
-# Start conversion button
 tk.Button(root, text="Start Conversion", command=start_conversion).pack(pady=20)
 
-# Run the application
 root.mainloop()
